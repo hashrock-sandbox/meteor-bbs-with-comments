@@ -1,28 +1,42 @@
 Posts = new Meteor.Collection('posts');
-
+Comments = new Meteor.Collection('comments');
 
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
-
-  Template.hello.rendered = function(){
-    new Vue({
-      el: "#main",
-      sync: {
-        posts: function(){
-          return Posts.find();
-        }
-      },
-      methods: {
-        addPost: function(content){
-          Posts.insert({
-            content : content,
-            comment: []
-          });
-        }
-      }
-    })
-  };
+  Template.hello.helpers({
+    posts: function(){
+      return Posts.find();
+    }
+  });
+  
+  Template.form.events({
+    "submit form": function(e){
+      e.preventDefault();
+      var text = event.target.content.value;
+      Posts.insert({
+        content: text
+      });
+      event.target.content.value = "";
+    }
+  });
+  
+  Template.commentForm.events({
+    "submit form": function(e){
+      e.preventDefault();
+      var text = event.target.content.value;
+      Comments.insert({
+        content: text,
+        postId: this._id
+      });
+      event.target.content.value = "";
+    }
+  });
+  
+  Template.post.helpers({
+    comments: function(){
+      return Comments.find({postId: this._id});
+    }
+  });
+  
 }
 
 if (Meteor.isServer) {

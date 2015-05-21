@@ -1,10 +1,5 @@
 <head>
   <title>tree</title>
-  <style>
-    .post{
-      border: solid 1px gray;
-    }
-  </style>
 </head>
 
 <body>
@@ -13,16 +8,50 @@
   {{> hello}}
 </body>
 
+<template name="form">
+  <div class="post">
+    <form>
+      <textarea name="content"></textarea>
+      <input type="submit" value="Add">
+    </form>
+  </div>
+</template>
+
+
 <template name="hello">
-  <div id="main">
-    <textarea v-model="formContent"></textarea>
-    <button v-on="click: addPost(formContent)">ADD</button>
-      
-    <div class="post" v-repeat="post:posts">
-      <pre v-text="post.content">
-        
-      </pre>
+  {{> form}}
+  
+  {{#each posts}}
+    {{> post}}
+  {{/each}}
+</template>
+
+<template name="commentForm">
+  <h5>Write Comment</h5>
+  <form>
+    <textarea name="content"></textarea>
+    <input type="submit" value="Add">
+  </form>
+</template>
+
+<template name="comment">
+  <div class="comment">
+    {{content}}
+  </div>
+</template>
+
+<template name="post">
+  <div class="post">
+    {{content}}
+    
+    <div class="comments">
+      {{#each comments}}
+        {{> comment}}
+      {{/each}}
     </div>
-      
+    
+    <div class="commentForm">
+      {{> commentForm}}
+    </div>
   </div>
 </template>
