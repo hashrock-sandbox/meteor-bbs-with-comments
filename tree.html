@@ -1,0 +1,28 @@
+<head>
+  <title>tree</title>
+  <style>
+    .post{
+      border: solid 1px gray;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> hello}}
+</body>
+
+<template name="hello">
+  <div id="main">
+    <textarea v-model="formContent"></textarea>
+    <button v-on="click: addPost(formContent)">ADD</button>
+      
+    <div class="post" v-repeat="post:posts">
+      <pre v-text="post.content">
+        
+      </pre>
+    </div>
+      
+  </div>
+</template>
